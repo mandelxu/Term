@@ -1,0 +1,5 @@
+Term (React + Electron)这是一个使用 React、Electron 和 Gemini API 构建的，专注于考研 408 数据结构和算法练习的桌面应用。特性AI 生成题目: 根据 408 考纲动态生成练习题。智能分页: 优雅的内容分页，确保 UI 始终保持固定高度。AI 评分: 提交伪代码或解决方案，获得即时评分和改进建议。可定制练习: 可选择不同知识点（线性表、树图等）、难度和语言。极简界面: 遵循 OpenAI 风格的全白、无阴影设计。如何开始这是一个使用 create-react-app (CRA) 和 electron 搭建的项目。1. 安装依赖在项目根目录运行：npm install
+2. 运行开发环境应用需要同时启动 React 开发服务器和 Electron 主进程。npm start
+package.json 中的 concurrently 和 wait-on 脚本会自动处理这个过程：启动 Electron 应用，它会自动加载 http://localhost:3000。3. API 密钥重要: 本项目使用 Gemini API。在项目的根目录（与 package.json 同级）创建一个名为 .env 的文件。将您的 API 密钥添加到 .env 文件中，如下所示：REACT_APP_GEMINI_API_KEY="YOUR_API_KEY_HERE"
+CRA (Create React App) 要求环境变量必须以 REACT_APP_ 开头。重要提示: 确保将 .env 文件添加到您的 .gitignore 文件中，永远不要将您的密钥提交到 Git 仓库。4. 打包和分发要为您的操作系统构建可执行的应用（如 .app 或 .exe）：npm run dist
+electron-builder 会读取 package.json 中的配置，将 React 应用打包，然后将其与 Electron 封装在一起，输出到 dist/ 目录中。
