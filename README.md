@@ -1,5 +1,148 @@
-Term (React + Electron)这是一个使用 React、Electron 和 Gemini API 构建的，专注于考研 408 数据结构和算法练习的桌面应用。特性AI 生成题目: 根据 408 考纲动态生成练习题。智能分页: 优雅的内容分页，确保 UI 始终保持固定高度。AI 评分: 提交伪代码或解决方案，获得即时评分和改进建议。可定制练习: 可选择不同知识点（线性表、树图等）、难度和语言。极简界面: 遵循 OpenAI 风格的全白、无阴影设计。如何开始这是一个使用 create-react-app (CRA) 和 electron 搭建的项目。1. 安装依赖在项目根目录运行：npm install
-2. 运行开发环境应用需要同时启动 React 开发服务器和 Electron 主进程。npm start
-package.json 中的 concurrently 和 wait-on 脚本会自动处理这个过程：启动 Electron 应用，它会自动加载 http://localhost:3000。3. API 密钥重要: 本项目使用 Gemini API。在项目的根目录（与 package.json 同级）创建一个名为 .env 的文件。将您的 API 密钥添加到 .env 文件中，如下所示：REACT_APP_GEMINI_API_KEY="YOUR_API_KEY_HERE"
-CRA (Create React App) 要求环境变量必须以 REACT_APP_ 开头。重要提示: 确保将 .env 文件添加到您的 .gitignore 文件中，永远不要将您的密钥提交到 Git 仓库。4. 打包和分发要为您的操作系统构建可执行的应用（如 .app 或 .exe）：npm run dist
-electron-builder 会读取 package.json 中的配置，将 React 应用打包，然后将其与 Electron 封装在一起，输出到 dist/ 目录中。
+<div align="center">
+  <h1>Term</h1>
+  <p><em>A minimal, AI‑powered desktop app for 408 algorithm practice.</em></p>
+
+  <p>
+    <img alt="Build Status" src="https://img.shields.io/badge/build-passing-brightgreen" />
+    <img alt="Platform" src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-blue" />
+    <img alt="License" src="https://img.shields.io/badge/license-MIT-lightgrey" />
+  </p>
+</div>
+
+> Term is an elegant, distraction‑free environment for students preparing for the CS **408** postgraduate entrance exam. It leverages the **Gemini API** to generate an infinite stream of unique algorithm problems and provide instant, rubric‑based feedback on your handwritten solutions.
+>
+> Built with **React**, **Electron**, and **Tailwind CSS**.
+
+<p align="center">
+  <em>这个人很懒什么都没有留下。。。</em>
+</p>
+
+---
+
+## Features
+
+* **AI Problem Generation** – Get unique, exam‑style 408 problems on demand.
+* **Intelligent Feedback** – Submit your solution (pseudocode or text) and receive an instant score and actionable suggestions.
+* **Targeted Practice** – Filter by topic (e.g., Linear List, Tree & Binary Tree, Graph) and difficulty.
+* **Elegant UI** – Minimal, white, focused interface inspired by OpenAI’s aesthetic.
+* **Handwritten Code Pad** – A simple textarea designed to mimic exam conditions.
+* **Height‑aware Pagination** – Precise, CJK‑friendly pagination so long problems/feedback fit the viewport without scrolling.
+* **Bilingual** – Toggle English / Chinese for generated content.
+
+## Tech Stack
+
+* **Frontend**: React (v18), Tailwind CSS, Framer Motion, lucide‑react
+* **Desktop**: Electron
+* **AI**: Google Gemini API
+
+---
+
+## Getting Started
+
+Follow these instructions to run Term locally for development and testing.
+
+### 1) Prerequisites
+
+* Node.js (LTS recommended)
+* Git
+
+### 2) Install
+
+```bash
+# Clone the repository
+git clone https://github.com/mandelxu/Term.git
+cd Term
+
+# Install dependencies
+npm install
+# or: pnpm i / yarn
+```
+
+### 3) Configure API Key
+
+> Quick local dev is fine with a client env var, but **do not** ship client keys in production. See the **Security** note.
+
+Create a **.env** file in the project root (where `package.json` is):
+
+```
+REACT_APP_GEMINI_API_KEY="YOUR_API_KEY_HERE"
+```
+
+* For Create React App, `REACT_APP_` prefix is required.
+* `.env` is in `.gitignore` and should **never** be committed.
+
+### 4) Run the App (React + Electron, concurrently)
+
+This project uses **concurrently** to run the React dev server and the Electron app at the same time.
+
+```bash
+npm start
+```
+
+This will:
+
+* start the React development server at `http://localhost:3000`
+* launch the Electron shell that loads the React app
+* enable hot‑reload for both the renderer (React) and the main process (Electron)
+
+> If your setup is custom, ensure your `package.json` has scripts similar to:
+>
+> ```json
+> {
+>   "scripts": {
+>     "start": "concurrently \"npm:react\" \"npm:electron\"",
+>     "react": "react-scripts start",
+>     "electron": "wait-on http://localhost:3000 && electron ."
+>   }
+> }
+> ```
+
+### 5) (Optional) Build & Package
+
+If you use `electron-builder` (recommended), add scripts like:
+
+```json
+{
+  "scripts": {
+    "build:react": "react-scripts build",
+    "build:electron": "tsc -p electron",
+    "dist": "npm run build:react && electron-builder"
+  }
+}
+```
+
+Then:
+
+```bash
+npm run dist
+```
+
+This will build the production React bundle and create desktop installers for macOS/Windows/Linux (depending on your `electron-builder` config).
+
+---
+
+## Security
+
+* **Do not** expose API keys in client bundles.
+* For production, prefer a small **proxy** (Express / serverless) that forwards requests to Gemini with your secret. Example proxy is included in the template README; adapt it to your stack.
+
+---
+
+## How to Contribute
+
+Contributions are welcome! If you have suggestions or find a bug:
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feat/YourAmazingFeature`
+3. Make your changes
+4. Commit: `git commit -m "feat: add YourAmazingFeature"`
+5. Push: `git push origin feat/YourAmazingFeature`
+6. Open a Pull Request
+
+Please keep PRs focused and small. Include before/after screenshots for UI changes when possible.
+
+---
+
+## License
+
+This project is licensed under the **MIT License** — see the `LICENSE` file for details.
